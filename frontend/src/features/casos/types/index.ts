@@ -10,6 +10,7 @@ export interface Caso {
     veterinaria?: string;
     diagnostico?: string;
     id_hogar_de_paso?: number;
+    hogar_nombre?: string;
     // Calculated fields from serializer
     total_donado?: number;
     total_gastado?: number;

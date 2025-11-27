@@ -2,15 +2,13 @@ import React, { forwardRef } from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     label?: string;
     error?: string;
-    options: { value: string; label: string }[];
-    placeholder?: string;
 }
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-    ({ className, label, error, options, placeholder, ...props }, ref) => {
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+    ({ className, label, error, ...props }, ref) => {
         return (
             <div className="w-full">
                 {label && (
@@ -18,11 +16,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         {label}
                     </label>
                 )}
-                <select
+                <textarea
                     ref={ref}
                     className={twMerge(
                         clsx(
-                            "w-full px-4 py-2 border rounded-xl shadow-sm outline-none transition-all bg-white appearance-none",
+                            "w-full px-4 py-2 border rounded-xl shadow-sm outline-none transition-all bg-white",
                             "focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500",
                             "disabled:bg-slate-50 disabled:text-slate-500",
                             error
@@ -32,14 +30,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         className
                     )}
                     {...props}
-                >
-                    {placeholder && <option value="">{placeholder}</option>}
-                    {options.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </select>
+                />
                 {error && (
                     <p className="mt-1 text-sm text-red-500 animate-fadeIn">
                         {error}
@@ -50,4 +41,4 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     }
 );
 
-Select.displayName = 'Select';
+Textarea.displayName = 'Textarea';

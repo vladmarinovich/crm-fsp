@@ -95,7 +95,7 @@ export const ProveedorForm = ({ initialData, isEditing = false }: ProveedorFormP
                 />
             </div>
 
-            <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-4 pt-6 border-t border-slate-100">
                 <Button
                     type="button"
                     variant="outline"

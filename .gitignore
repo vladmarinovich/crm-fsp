@@ -1,3 +1,4 @@
+
 # --- GENERAL & OS ---
 .DS_Store
 Thumbs.db
@@ -28,6 +29,23 @@ coverage/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# --- DATA & SCRIPTS ---
+data/
+*.csv
+*.json
+*.sql
+*.dump
+
+# --- DEBUG & TEMP SCRIPTS ---
+debug_*.py
+debug_*.sh
+fix_*.py
+run_*.sh
+check_*.py
+verify_*.py
+revert_*.py
+diagnostic.py
 
 # --- NODE / FRONTEND ---
 node_modules/

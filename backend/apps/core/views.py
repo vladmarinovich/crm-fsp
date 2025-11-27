@@ -16,12 +16,13 @@ class DashboardView(APIView):
         end_date = request.query_params.get('end_date')
 
         # Filtros base para Donaciones y Gastos
-        donacion_filters = Q(estado='APROBADA')
+        # Support both 'APROBADA' (model) and 'Completada' (legacy/imported data)
+        donacion_filters = Q(estado__in=['APROBADA', 'Completada'])
         gasto_filters = Q() & ~Q(estado='ANULADO') # Exclude ANULADO
 
         # Filtros específicos para agregaciones (relaciones)
-        rel_donacion_filters = Q()
-        rel_gasto_filters = Q()
+        rel_donacion_filters = Q(donaciones__estado__in=['APROBADA', 'Completada'])
+        rel_gasto_filters = Q() & ~Q(gastos__estado='ANULADO')
 
         if start_date:
             donacion_filters &= Q(fecha_donacion__gte=start_date)
@@ -57,7 +58,7 @@ class DashboardView(APIView):
                 "total_donado": total_donado,
                 "total_gastado": total_gastado,
                 "balance_neto": balance,
-                "casos_activos_count": Caso.objects.exclude(estado__in=['ADOPTADO', 'FALLECIDO']).count()
+                "casos_activos_count": Caso.objects.filter(fecha_salida__isnull=True).count()
             },
             "top_ciudades": top_ciudades,
             "casos_destacados": CasoSerializer(casos_activos, many=True).data

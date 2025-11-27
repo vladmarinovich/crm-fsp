@@ -15,7 +15,7 @@ class DonanteSerializer(serializers.ModelSerializer):
         # Incluimos estados legacy que se ven en la captura (completado, confirmado)
         estados_validos = [
             'APROBADA', 'Aprobada', 'aprobada', 
-            'COMPLETADO', 'Completado', 'completado', 
+            'COMPLETADO', 'Completado', 'completado', 'Completada',
             'CONFIRMADO', 'Confirmado', 'confirmado',
             'EXITOSA', 'Exitosa', 'exitosa'
         ]

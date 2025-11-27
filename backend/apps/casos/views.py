@@ -16,8 +16,8 @@ class CasoViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def activos(self, request):
-        """Retorna casos que no están cerrados, adoptados o fallecidos"""
-        casos = Caso.objects.exclude(estado__in=['CERRADO', 'ADOPTADO', 'FALLECIDO'])
+        """Retorna casos que no tienen fecha de salida (activos)"""
+        casos = Caso.objects.filter(fecha_salida__isnull=True)
         serializer = self.get_serializer(casos, many=True)
         return Response(serializer.data)
 

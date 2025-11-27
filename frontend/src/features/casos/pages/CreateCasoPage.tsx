@@ -1,6 +1,8 @@
 import { CasoForm } from '../components/CasoForm';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 export const CreateCasoPage = () => {
     const navigate = useNavigate();
@@ -8,21 +10,22 @@ export const CreateCasoPage = () => {
     return (
         <div className="max-w-3xl mx-auto space-y-6">
             <div className="flex items-center gap-4">
-                <button
+                <Button
+                    variant="ghost"
                     onClick={() => navigate('/casos')}
-                    className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
+                    className="p-2 h-auto rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
                 >
                     <ArrowLeftIcon className="h-6 w-6" />
-                </button>
+                </Button>
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Nuevo Caso</h1>
-                    <p className="text-sm text-gray-500">Registra un nuevo caso de rescate.</p>
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Nuevo Caso</h1>
+                    <p className="text-sm text-slate-500">Registra un nuevo caso de rescate.</p>
                 </div>
             </div>
 
-            <div className="card">
+            <Card className="p-6 border-slate-200 shadow-sm">
                 <CasoForm />
-            </div>
+            </Card>
         </div>
     );
 };

@@ -71,17 +71,17 @@ export const Combobox = ({
 
     return (
         <div className="w-full relative" ref={wrapperRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 {label}
             </label>
             <div className="relative">
                 <input
                     type="text"
                     className={clsx(
-                        "w-full pl-4 pr-10 py-2 border rounded-lg shadow-sm outline-none transition-all",
+                        "w-full pl-4 pr-10 py-2 border rounded-xl shadow-sm outline-none transition-all bg-white",
                         error
-                            ? "border-red-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                            : "border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            ? "border-red-300 focus:ring-2 focus:ring-red-100 focus:border-red-500"
+                            : "border-slate-200 focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 hover:border-slate-300"
                     )}
                     placeholder={placeholder}
                     value={isOpen ? query : selectedLabel}
@@ -97,20 +97,20 @@ export const Combobox = ({
                     }}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                    <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <ChevronUpDownIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
                 </div>
             </div>
 
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+            {error && <p className="mt-1 text-sm text-red-500 animate-fadeIn">{error}</p>}
 
             {isOpen && (
-                <ul className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                <ul className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-base shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-slate-100">
                     {isLoading ? (
-                        <li className="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-500">
+                        <li className="relative cursor-default select-none py-2 pl-3 pr-9 text-slate-500">
                             Cargando...
                         </li>
                     ) : options.length === 0 ? (
-                        <li className="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-500">
+                        <li className="relative cursor-default select-none py-2 pl-3 pr-9 text-slate-500">
                             No se encontraron resultados
                         </li>
                     ) : (
@@ -118,14 +118,14 @@ export const Combobox = ({
                             <li
                                 key={option.value}
                                 className={clsx(
-                                    "relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-primary-50 hover:text-primary-900 cursor-pointer",
-                                    option.value === value ? "font-semibold text-primary-900 bg-primary-50" : "text-gray-900"
+                                    "relative cursor-default select-none py-2.5 pl-3 pr-9 hover:bg-cyan-50 hover:text-cyan-900 cursor-pointer transition-colors",
+                                    option.value === value ? "font-semibold text-cyan-900 bg-cyan-50" : "text-slate-700"
                                 )}
                                 onClick={() => handleSelect(option)}
                             >
                                 <span className="block truncate">{option.label}</span>
                                 {option.value === value && (
-                                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-primary-600">
+                                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-cyan-600">
                                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
                                     </span>
                                 )}

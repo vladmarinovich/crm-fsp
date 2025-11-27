@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useCasos } from '../hooks/useCasos';
-import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 
 export const CasosPage = () => {
     const navigate = useNavigate();
@@ -27,100 +30,112 @@ export const CasosPage = () => {
         setPage(1);
     };
 
-    if (isLoading) return <div className="p-4">Cargando casos...</div>;
-    if (error) return <div className="p-4 text-red-500">Error al cargar casos</div>;
-
     const getStatusColor = (estado: string) => {
         switch (estado) {
-            case 'ABIERTO': return 'bg-blue-100 text-blue-800';
-            case 'EN_TRATAMIENTO': return 'bg-yellow-100 text-yellow-800';
-            case 'ADOPTADO': return 'bg-green-100 text-green-800';
-            case 'FALLECIDO': return 'bg-gray-100 text-gray-800';
-            case 'CERRADO': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'ABIERTO': return 'bg-blue-50 text-blue-700 border-blue-100';
+            case 'EN_TRATAMIENTO': return 'bg-amber-50 text-amber-700 border-amber-100';
+            case 'ADOPTADO': return 'bg-emerald-50 text-emerald-700 border-emerald-100';
+            case 'FALLECIDO': return 'bg-slate-100 text-slate-600 border-slate-200';
+            case 'CERRADO': return 'bg-red-50 text-red-700 border-red-100';
+            default: return 'bg-slate-50 text-slate-600 border-slate-200';
         }
     };
 
+    if (isLoading) return (
+        <div className="min-h-[60vh] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+        </div>
+    );
+
+    if (error) return <div className="p-8 text-center text-red-500">Error al cargar casos</div>;
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Casos</h1>
-                    <p className="text-sm text-gray-500 mt-1">Gestiona los casos de rescate</p>
+                    <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Casos</h1>
+                    <p className="text-sm text-slate-500 mt-1">Gestiona los casos de rescate</p>
                 </div>
-                <button
+                <Button
                     onClick={() => navigate('/casos/nuevo')}
-                    className="btn-primary flex items-center justify-center gap-2"
+                    className="flex items-center gap-2"
                 >
                     <PlusIcon className="h-5 w-5" />
                     Nuevo Caso
-                </button>
+                </Button>
             </div>
 
             {/* Filters */}
-            <div className="card flex items-center gap-4">
-                <div className="relative flex-1">
-                    <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                        type="text"
+            <Card className="flex flex-col sm:flex-row items-center gap-4 p-4">
+                <div className="relative flex-1 w-full">
+                    <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Input
                         placeholder="Buscar caso..."
                         value={search}
                         onChange={(e) => {
                             setSearch(e.target.value);
                             setPage(1);
                         }}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        className="pl-10 border-none bg-slate-50 focus:bg-white transition-colors"
                     />
                 </div>
-            </div>
+                <Button variant="outline" className="flex items-center gap-2">
+                    <FunnelIcon className="h-5 w-5 text-slate-500" />
+                    Filtros
+                </Button>
+            </Card>
 
             {/* Table */}
-            <div className="card overflow-hidden p-0">
+            <Card className="p-0 overflow-hidden border-slate-200 shadow-sm">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-slate-100">
+                        <thead className="bg-slate-50/50">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caso</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingreso</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Veterinaria</th>
-                                <th scope="col" className="relative px-6 py-3">
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Caso</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Ingreso</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Veterinaria</th>
+                                <th scope="col" className="relative px-6 py-4">
                                     <span className="sr-only">Acciones</span>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-slate-100">
                             {data?.results.map((caso) => (
-                                <tr key={caso.id_caso} className="hover:bg-gray-50 transition-colors">
+                                <tr key={caso.id_caso} className="hover:bg-slate-50/50 transition-colors group">
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{caso.nombre_caso}</div>
-                                        {caso.id_hogar_de_paso && <div className="text-xs text-gray-500">Hogar ID: {caso.id_hogar_de_paso}</div>}
+                                        <div className="text-sm font-semibold text-slate-900">{caso.nombre_caso}</div>
+                                        {caso.id_hogar_de_paso && <div className="text-xs text-slate-500 mt-0.5">Hogar ID: {caso.id_hogar_de_paso}</div>}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(caso.estado)}`}>
+                                        <span className={`px-2.5 py-0.5 inline-flex text-xs font-medium rounded-full border ${getStatusColor(caso.estado)}`}>
                                             {caso.estado.replace('_', ' ')}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                                         {new Date(caso.fecha_ingreso).toLocaleDateString()}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                                         {caso.veterinaria || '-'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button
-                                            onClick={() => navigate(`/casos/${caso.id_caso}`)}
-                                            className="text-gray-600 hover:text-primary-900 mr-3"
-                                        >
-                                            Ver
-                                        </button>
-                                        <button
-                                            onClick={() => navigate(`/casos/${caso.id_caso}/editar`)}
-                                            className="text-primary-600 hover:text-primary-900"
-                                        >
-                                            Editar
-                                        </button>
+                                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button
+                                                variant="outline"
+                                                className="px-3 py-1 text-xs h-auto"
+                                                onClick={() => navigate(`/casos/${caso.id_caso}`)}
+                                            >
+                                                Ver
+                                            </Button>
+                                            <Button
+                                                variant="secondary"
+                                                className="px-3 py-1 text-xs h-auto bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 border-none shadow-none"
+                                                onClick={() => navigate(`/casos/${caso.id_caso}/editar`)}
+                                            >
+                                                Editar
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -135,10 +150,10 @@ export const CasosPage = () => {
                         pageSize={pageSize}
                         onPageChange={handlePageChange}
                         onPageSizeChange={handlePageSizeChange}
-                        className="px-6 border-t border-gray-200"
+                        className="px-6 py-4 border-t border-slate-100"
                     />
                 )}
-            </div>
+            </Card>
         </div>
     );
 };

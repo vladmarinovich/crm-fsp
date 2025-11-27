@@ -41,4 +41,7 @@ export const ENDPOINTS = {
         LIST: '/proveedores/',
         GASTOS: (id: number) => `/proveedores/${id}/gastos/`,
     },
+    HOGARES: {
+        LIST: '/hogares/',
+    },
 };

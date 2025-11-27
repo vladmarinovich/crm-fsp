@@ -16,7 +16,8 @@ export const Topbar = () => {
     return (
         <header className={clsx(
             "bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 fixed top-0 right-0 z-10 transition-all duration-300 ease-in-out",
-            isSidebarOpen ? "left-64" : "left-0"
+            "left-0", // Always left-0 on mobile
+            isSidebarOpen ? "md:left-64" : "md:left-0" // Adjust on desktop
         )}>
             <div className="flex items-center gap-4">
                 <button

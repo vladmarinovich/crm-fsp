@@ -4,6 +4,9 @@ import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 
 export const ProveedoresPage = () => {
     const navigate = useNavigate();
@@ -27,30 +30,35 @@ export const ProveedoresPage = () => {
         setPage(1);
     };
 
-    if (isLoading) return <div className="p-4">Cargando proveedores...</div>;
-    if (error) return <div className="p-4 text-red-500">Error al cargar proveedores</div>;
+    if (isLoading) return (
+        <div className="min-h-[60vh] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+        </div>
+    );
+
+    if (error) return <div className="p-8 text-center text-red-500">Error al cargar proveedores</div>;
 
     return (
         <div className="space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Proveedores</h1>
-                    <p className="text-sm text-gray-500 mt-1">Gestiona la base de datos de proveedores y servicios</p>
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Proveedores</h1>
+                    <p className="text-sm text-slate-500 mt-1">Gestiona la base de datos de proveedores y servicios</p>
                 </div>
-                <button
+                <Button
                     onClick={() => navigate('/proveedores/nuevo')}
-                    className="btn-primary flex items-center justify-center gap-2"
+                    className="flex items-center gap-2"
                 >
                     <PlusIcon className="h-5 w-5" />
                     Nuevo Proveedor
-                </button>
+                </Button>
             </div>
 
             {/* Filters */}
-            <div className="card flex items-center gap-4">
-                <div className="relative flex-1">
-                    <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Card className="p-4 flex items-center gap-4 border-slate-200 shadow-sm">
+                <div className="relative flex-1 max-w-md">
+                    <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                         type="text"
                         placeholder="Buscar por nombre, NIT, contacto..."
@@ -59,58 +67,69 @@ export const ProveedoresPage = () => {
                             setSearch(e.target.value);
                             setPage(1);
                         }}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 outline-none transition-all text-sm"
                     />
                 </div>
-            </div>
+            </Card>
 
             {/* Table */}
-            <div className="card overflow-hidden p-0">
+            <Card className="overflow-hidden border-slate-200 shadow-sm p-0">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-slate-100">
+                        <thead className="bg-slate-50/50">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
-                                <th scope="col" className="relative px-6 py-3">
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Proveedor</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Tipo</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Contacto</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Ubicación</th>
+                                <th scope="col" className="relative px-6 py-4">
                                     <span className="sr-only">Acciones</span>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-slate-100">
                             {data?.results.map((proveedor) => (
-                                <tr key={proveedor.id_proveedor} className="hover:bg-gray-50 transition-colors">
+                                <tr key={proveedor.id_proveedor} className="hover:bg-slate-50/50 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{proveedor.nombre_proveedor}</div>
-                                        <div className="text-xs text-gray-500">{proveedor.nit}</div>
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 font-bold text-sm">
+                                                {proveedor.nombre_proveedor.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <div className="text-sm font-bold text-slate-900">{proveedor.nombre_proveedor}</div>
+                                                <div className="text-xs text-slate-500 font-medium">{proveedor.nit}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <span className="px-2.5 py-0.5 inline-flex text-xs leading-5 font-bold rounded-full bg-slate-100 text-slate-700 border border-slate-200">
                                             {proveedor.tipo_proveedor || 'General'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{proveedor.nombre_contacto}</div>
-                                        <div className="text-xs text-gray-500">{proveedor.telefono}</div>
+                                        <div className="text-sm font-medium text-slate-900">{proveedor.nombre_contacto}</div>
+                                        <div className="text-xs text-slate-500">{proveedor.telefono}</div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-medium">
                                         {proveedor.ciudad || '-'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button
-                                            onClick={() => navigate(`/proveedores/${proveedor.id_proveedor}`)}
-                                            className="text-gray-600 hover:text-primary-900 mr-3"
-                                        >
-                                            Ver
-                                        </button>
-                                        <button
-                                            onClick={() => navigate(`/proveedores/${proveedor.id_proveedor}/editar`)}
-                                            className="text-primary-600 hover:text-primary-900"
-                                        >
-                                            Editar
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                onClick={() => navigate(`/proveedores/${proveedor.id_proveedor}`)}
+                                                className="text-slate-400 hover:text-cyan-600 p-2 h-auto"
+                                            >
+                                                Ver
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                onClick={() => navigate(`/proveedores/${proveedor.id_proveedor}/editar`)}
+                                                className="text-slate-400 hover:text-cyan-600 p-2 h-auto"
+                                            >
+                                                Editar
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -125,10 +144,10 @@ export const ProveedoresPage = () => {
                         pageSize={pageSize}
                         onPageChange={handlePageChange}
                         onPageSizeChange={handlePageSizeChange}
-                        className="px-6 border-t border-gray-200"
+                        className="px-6 py-4 border-t border-slate-100"
                     />
                 )}
-            </div>
+            </Card>
         </div>
     );
 };

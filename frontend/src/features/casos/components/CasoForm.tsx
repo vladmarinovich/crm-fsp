@@ -1,11 +1,15 @@
+import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { CasoFormData, casoSchema } from '../schema/casoSchema';
 import { useCreateCaso, useUpdateCaso } from '../hooks/useCasos';
+import { useHogares } from '../hooks/useHogares';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
+import { Textarea } from '@/components/ui/Textarea';
+import { Combobox } from '@/components/ui/Combobox';
 import { Caso } from '../types';
 
 interface CasoFormProps {
@@ -18,9 +22,21 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
     const createMutation = useCreateCaso();
     const updateMutation = useUpdateCaso();
 
+    const [hogarSearch, setHogarSearch] = useState('');
+    const [debouncedHogarSearch, setDebouncedHogarSearch] = useState('');
+
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedHogarSearch(hogarSearch), 500);
+        return () => clearTimeout(timer);
+    }, [hogarSearch]);
+
+    const { data: hogaresData, isLoading: isLoadingHogares } = useHogares(debouncedHogarSearch);
+
     const {
         register,
         handleSubmit,
+        setValue,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<CasoFormData>({
         resolver: zodResolver(casoSchema),
@@ -29,6 +45,8 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
             fecha_ingreso: new Date().toISOString().split('T')[0],
         },
     });
+
+    const selectedHogarId = watch('id_hogar_de_paso');
 
     const onSubmit: SubmitHandler<CasoFormData> = async (data) => {
         try {
@@ -98,29 +116,31 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
                     placeholder="Ej: Vet. San Francisco"
                 />
 
-                {/* TODO: Replace with a proper Select fetching Hogares de Paso */}
-                <Input
-                    label="ID Hogar de Paso (Opcional)"
-                    type="number"
-                    {...register('id_hogar_de_paso')}
+                <Combobox
+                    label="Hogar de Paso (Opcional)"
+                    value={selectedHogarId}
+                    onChange={(val) => setValue('id_hogar_de_paso', Number(val), { shouldValidate: true })}
+                    onSearch={setHogarSearch}
+                    options={hogaresData?.results.map(h => ({ value: h.id_hogar, label: h.nombre_hogar })) || []}
+                    isLoading={isLoadingHogares}
                     error={errors.id_hogar_de_paso?.message}
-                    placeholder="ID del hogar"
+                    placeholder="Buscar hogar..."
+                    initialLabel={initialData?.hogar_nombre}
                 />
             </div>
 
+
+
             <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Diagnóstico / Descripción
-                </label>
-                <textarea
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                <Textarea
+                    label="Diagnóstico / Descripción"
                     rows={4}
                     {...register('diagnostico')}
                     placeholder="Detalles del caso, diagnóstico médico, historia..."
-                ></textarea>
+                />
             </div>
 
-            <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-4 pt-6 border-t border-slate-100">
                 <Button
                     type="button"
                     variant="outline"

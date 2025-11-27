@@ -6,6 +6,7 @@ import { useCreateDonante, useUpdateDonante } from '../hooks/useDonantes';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
+import { Textarea } from '@/components/ui/Textarea';
 import { Donante } from '../types';
 
 interface DonanteFormProps {
@@ -122,19 +123,18 @@ export const DonanteForm = ({ initialData, isEditing = false }: DonanteFormProps
                 />
             </div>
 
+
+
             <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Notas Adicionales
-                </label>
-                <textarea
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                <Textarea
+                    label="Notas Adicionales"
                     rows={3}
                     {...register('notas')}
                     placeholder="Información extra sobre el donante..."
-                ></textarea>
+                />
             </div>
 
-            <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-4 pt-6 border-t border-slate-100">
                 <Button
                     type="button"
                     variant="outline"

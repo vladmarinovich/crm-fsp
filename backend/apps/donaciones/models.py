@@ -57,6 +57,7 @@ class Donacion(models.Model):
         TARJETA = 'TARJETA', _('Tarjeta de Crédito/Débito')
         WOMPI = 'WOMPI', _('Wompi')
         PAYU = 'PAYU', _('PayU')
+        NEQUI = 'NEQUI', _('Nequi')
         OTRO = 'OTRO', _('Otro')
 
     id_donacion = models.AutoField(primary_key=True)

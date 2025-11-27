@@ -6,10 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables
 env_path = BASE_DIR / '.env'
-load_dotenv(env_path)
+load_dotenv(env_path, override=True)
 
-print(f"📂 Cargando configuración desde: {env_path}")
-print(f"🔑 SUPABASE_URL encontrada: {'SÍ' if os.getenv('SUPABASE_URL') else 'NO'}")
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-key")
@@ -73,16 +72,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+import dj_database_url
+
+# Database
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'postgres'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'aws-1-us-east-1.pooler.supabase.com'),
-        'PORT': os.getenv('DB_PORT', '6543'),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -124,7 +122,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 # Django REST Framework Configuration
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'backend.apps.core.pagination.CustomPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',

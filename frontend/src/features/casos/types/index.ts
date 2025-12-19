@@ -9,6 +9,7 @@ export interface Caso {
     fecha_salida?: string;
     veterinaria?: string;
     diagnostico?: string;
+    presupuesto?: number;
     id_hogar_de_paso?: number;
     hogar_nombre?: string;
     // Computed fields from backend

@@ -13,6 +13,7 @@ export const casoSchema = z.object({
     }),
     veterinaria: z.string().optional(),
     diagnostico: z.string().optional(),
+    presupuesto: z.coerce.number().optional(),
     id_hogar_de_paso: z.coerce.number().optional(), // Coerce to number if input is string
 });
 

@@ -118,6 +118,15 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
                     placeholder="Ej: Vet. San Francisco"
                 />
 
+                <Input
+                    label="Presupuesto Estimado"
+                    type="number"
+                    step="0.01"
+                    {...register('presupuesto')}
+                    error={errors.presupuesto?.message}
+                    placeholder="Ej: 500000"
+                />
+
                 <Combobox
                     label="Hogar de Paso (Opcional)"
                     value={selectedHogarId}

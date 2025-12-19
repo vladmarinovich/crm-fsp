@@ -19,3 +19,14 @@ class GastoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gasto
         fields = '__all__'
+
+    def validate_fecha_pago(self, value):
+        from django.utils import timezone
+        if value > timezone.now().date():
+            raise serializers.ValidationError("La fecha de pago no puede ser futura.")
+        return value
+
+    def validate_monto(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("El monto debe ser positivo.")
+        return value

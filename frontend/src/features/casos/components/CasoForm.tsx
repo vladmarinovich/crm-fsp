@@ -30,7 +30,7 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
         return () => clearTimeout(timer);
     }, [hogarSearch]);
 
-    const { data: hogaresData, isLoading: isLoadingHogares } = useHogares(debouncedHogarSearch);
+    const { data: hogaresData, isLoading: isLoadingHogares } = useHogares({ search: debouncedHogarSearch });
 
     const {
         register,
@@ -100,6 +100,7 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
                     type="date"
                     {...register('fecha_ingreso')}
                     error={errors.fecha_ingreso?.message}
+                    max={new Date().toISOString().split('T')[0]}
                 />
 
                 <Input
@@ -107,6 +108,7 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
                     type="date"
                     {...register('fecha_salida')}
                     error={errors.fecha_salida?.message}
+                    max={new Date().toISOString().split('T')[0]}
                 />
 
                 <Input
@@ -121,7 +123,7 @@ export const CasoForm = ({ initialData, isEditing = false }: CasoFormProps) => {
                     value={selectedHogarId}
                     onChange={(val) => setValue('id_hogar_de_paso', Number(val), { shouldValidate: true })}
                     onSearch={setHogarSearch}
-                    options={hogaresData?.results.map(h => ({ value: h.id_hogar, label: h.nombre_hogar })) || []}
+                    options={hogaresData?.results.map((h: any) => ({ value: h.id_hogar_de_paso, label: h.nombre_hogar })) || []}
                     isLoading={isLoadingHogares}
                     error={errors.id_hogar_de_paso?.message}
                     placeholder="Buscar hogar..."

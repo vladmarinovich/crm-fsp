@@ -13,4 +13,6 @@ export interface ProveedorFilters {
     search?: string;
     page?: number;
     page_size?: number;
+    start_date?: string;
+    end_date?: string;
 }

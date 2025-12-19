@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGasto } from '../hooks/useGastos';
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 export const GastoDetailPage = () => {
     const { id } = useParams();
@@ -81,7 +82,7 @@ export const GastoDetailPage = () => {
                         </div>
                         <div>
                             <p className="text-sm font-medium text-gray-500">Monto</p>
-                            <p className="text-xl font-bold text-gray-900">${gasto.monto.toLocaleString()}</p>
+                            <p className="text-xl font-bold text-gray-900">{formatCurrency(gasto.monto)}</p>
                         </div>
                     </div>
                     {gasto.comprobante && (
@@ -98,7 +99,7 @@ export const GastoDetailPage = () => {
                     <div>
                         <p className="text-sm font-medium text-gray-500">Total Gasto</p>
                         <p className="text-3xl font-bold text-red-600 mt-1">
-                            -${gasto.monto.toLocaleString()}
+                            -{formatCurrency(gasto.monto)}
                         </p>
                     </div>
                 </div>

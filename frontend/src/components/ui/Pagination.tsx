@@ -77,39 +77,64 @@ export const Pagination = ({
                             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
                         </button>
 
-                        {/* Page Numbers Logic */}
-                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                            let pageNum = i + 1;
-                            if (totalPages > 5) {
-                                if (currentPage > 3) {
-                                    pageNum = currentPage - 2 + i;
-                                }
-                                // Adjust if we are near the end
-                                if (pageNum > totalPages - 2) {
-                                    pageNum = totalPages - 4 + i;
-                                }
-                                // Ensure we don't go below 1
-                                if (pageNum < 1) pageNum = i + 1;
-                            }
-                            
-                            if (pageNum > totalPages) return null;
+                        {/* Logic for Page Numbers with Ellipses */}
+                        {(() => {
+                            const generatePagination = () => {
+                                const delta = 1; // Páginas vecinas a mostrar
+                                const range = [];
+                                const rangeWithDots: (number | string)[] = [];
 
-                            return (
-                                <button
-                                    key={pageNum}
-                                    onClick={() => onPageChange(pageNum)}
-                                    aria-current={currentPage === pageNum ? 'page' : undefined}
-                                    className={clsx(
-                                        "relative inline-flex items-center justify-center rounded-lg w-9 h-9 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all",
-                                        currentPage === pageNum
-                                            ? 'z-10 bg-primary-500 text-white shadow-md shadow-primary-500/30'
-                                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                    )}
-                                >
-                                    {pageNum}
-                                </button>
-                            );
-                        })}
+                                for (let i = 1; i <= totalPages; i++) {
+                                    if (
+                                        i === 1 ||
+                                        i === totalPages ||
+                                        (i >= currentPage - delta && i <= currentPage + delta)
+                                    ) {
+                                        range.push(i);
+                                    }
+                                }
+
+                                let l;
+                                for (let i of range) {
+                                    if (l) {
+                                        if (i - l === 2) {
+                                            rangeWithDots.push(l + 1);
+                                        } else if (i - l !== 1) {
+                                            rangeWithDots.push('...');
+                                        }
+                                    }
+                                    rangeWithDots.push(i);
+                                    l = i;
+                                }
+                                return rangeWithDots;
+                            };
+
+                            return generatePagination().map((pageNum, idx) => {
+                                if (pageNum === '...') {
+                                    return (
+                                        <span key={`dots-${idx}`} className="px-2 text-gray-500 select-none">
+                                            ...
+                                        </span>
+                                    );
+                                }
+
+                                return (
+                                    <button
+                                        key={pageNum}
+                                        onClick={() => onPageChange(pageNum as number)}
+                                        aria-current={currentPage === pageNum ? 'page' : undefined}
+                                        className={clsx(
+                                            "relative inline-flex items-center justify-center rounded-lg w-9 h-9 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all",
+                                            currentPage === pageNum
+                                                ? 'z-10 bg-primary-500 text-white shadow-md shadow-primary-500/30'
+                                                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                        )}
+                                    >
+                                        {pageNum}
+                                    </button>
+                                );
+                            });
+                        })()}
 
                         <button
                             onClick={() => onPageChange(currentPage + 1)}

@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from backend.apps.core.models import TimeStampedModel
 
-class Proveedor(models.Model):
+class Proveedor(TimeStampedModel):
     """
     Representa un proveedor de bienes o servicios para la fundación.
     """
@@ -22,7 +23,7 @@ class Proveedor(models.Model):
     def __str__(self):
         return str(self.nombre_proveedor)
 
-class Gasto(models.Model):
+class Gasto(TimeStampedModel):
     """
     Registra un egreso o gasto realizado por la fundación.
     """

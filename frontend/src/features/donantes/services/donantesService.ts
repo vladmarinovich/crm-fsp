@@ -32,4 +32,20 @@ export const donantesApi = {
         const { data } = await http.get(ENDPOINTS.DONANTES.DONACIONES(id));
         return data;
     },
+
+    exportCsv: async (filters?: DonanteFilters) => {
+        const response = await http.get('/donantes/exportar_csv/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
+
+    exportExcel: async (filters?: DonanteFilters) => {
+        const response = await http.get('/donantes/exportar_excel/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
 };

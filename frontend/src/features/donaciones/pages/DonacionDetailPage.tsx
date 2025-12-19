@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDonacion } from '../hooks/useDonaciones';
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/Button';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 export const DonacionDetailPage = () => {
     const { id } = useParams();
@@ -69,7 +70,7 @@ export const DonacionDetailPage = () => {
                     <div className="grid grid-cols-1 gap-4">
                         <div>
                             <p className="text-sm font-medium text-gray-500">Monto</p>
-                            <p className="text-3xl font-bold text-green-600">${donacion.monto.toLocaleString()}</p>
+                            <p className="text-3xl font-bold text-green-600">{formatCurrency(donacion.monto)}</p>
                         </div>
                         <div>
                             <p className="text-sm font-medium text-gray-500">Medio de Pago</p>

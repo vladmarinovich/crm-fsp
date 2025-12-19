@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from backend.apps.core.models import TimeStampedModel
 
-class Donante(models.Model):
+class Donante(TimeStampedModel):
     """
     Representa a un donante en el sistema CRM.
     """
@@ -23,7 +24,7 @@ class Donante(models.Model):
     donante = models.CharField(max_length=255, db_index=True)
     tipo_id = models.CharField(max_length=50, choices=TipoId.choices, null=True, blank=True)
     identificacion = models.CharField(max_length=50, null=True, blank=True, db_index=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    # created_at y last_modified_at vienen de TimeStampedModel
     correo = models.CharField(max_length=255, null=True, blank=True, db_index=True)
     telefono = models.CharField(max_length=50, null=True, blank=True)
     ciudad = models.CharField(max_length=100, null=True, blank=True)
@@ -42,7 +43,7 @@ class Donante(models.Model):
     def __str__(self):
         return str(self.donante)
 
-class Donacion(models.Model):
+class Donacion(TimeStampedModel):
     """
     Registra una donación financiera recibida por la fundación.
     """

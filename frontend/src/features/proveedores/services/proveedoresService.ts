@@ -32,4 +32,18 @@ export const proveedoresApi = {
         const { data } = await http.get(ENDPOINTS.PROVEEDORES.GASTOS(id));
         return data;
     },
+
+    exportCsv: async () => {
+        const response = await http.get(`${ENDPOINTS.PROVEEDORES.LIST}exportar_csv/`, {
+            responseType: 'blob',
+        });
+        return response.data;
+    },
+
+    exportExcel: async () => {
+        const response = await http.get(`${ENDPOINTS.PROVEEDORES.LIST}exportar_excel/`, {
+            responseType: 'blob',
+        });
+        return response.data;
+    },
 };

@@ -32,4 +32,20 @@ export const casosApi = {
         const { data } = await http.get<CasoBalance>(ENDPOINTS.CASOS.BALANCE(id));
         return data;
     },
+
+    exportCsv: async (filters?: { fecha_desde?: string; fecha_hasta?: string; start_date?: string; end_date?: string }) => {
+        const response = await http.get('/casos/exportar_csv/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
+
+    exportExcel: async (filters?: { fecha_desde?: string; fecha_hasta?: string; start_date?: string; end_date?: string }) => {
+        const response = await http.get('/casos/exportar_excel/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
 };

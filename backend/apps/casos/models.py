@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from backend.apps.core.models import TimeStampedModel
 
 class HogarDePaso(models.Model):
     """
@@ -27,7 +28,7 @@ class HogarDePaso(models.Model):
     def __str__(self):
         return str(self.nombre_hogar)
 
-class Caso(models.Model):
+class Caso(TimeStampedModel):
     """
     Representa un caso de rescate o ayuda a un animal específico.
     """

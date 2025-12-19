@@ -15,8 +15,9 @@ export interface Gasto {
 export interface GastoFilters {
     search?: string;
     estado?: string;
-    fecha_inicio?: string;
-    fecha_fin?: string;
+    start_date?: string;
+    end_date?: string;
+    caso?: string;
     page?: number;
     page_size?: number;
 }

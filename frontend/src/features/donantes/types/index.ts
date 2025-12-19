@@ -11,6 +11,9 @@ export interface Donante {
     notas?: string;
     fecha_creacion: string;
     total_donado?: number; // From serializer
+    cantidad_donaciones?: number;
+    promedio_donacion?: number;
+    ultima_donacion?: string;
 }
 
 export interface DonanteFilters {
@@ -19,4 +22,6 @@ export interface DonanteFilters {
     ciudad?: string;
     page?: number;
     page_size?: number;
+    start_date?: string;
+    end_date?: string;
 }

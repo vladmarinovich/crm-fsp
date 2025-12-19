@@ -18,6 +18,8 @@ export interface DonacionFilters {
     medio_pago?: string;
     fecha_desde?: string;
     fecha_hasta?: string;
+    start_date?: string;
+    end_date?: string;
     page?: number;
     page_size?: number;
 }

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useProveedores } from '../hooks/useProveedores';
-import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { proveedoresApi } from '../services/proveedoresService';
+import { PlusIcon, MagnifyingGlassIcon, TableCellsIcon, DocumentTextIcon, BuildingStorefrontIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+
 import { Card } from '@/components/ui/Card';
+import { KpiCard } from '@/components/ui/KpiCard';
+import { useProveedoresStats } from '../hooks/useProveedoresStats';
 
 export const ProveedoresPage = () => {
     const navigate = useNavigate();
@@ -14,6 +17,9 @@ export const ProveedoresPage = () => {
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500);
+
+    // Stats
+    const { data: stats } = useProveedoresStats();
 
     const { data, isLoading, error } = useProveedores({
         page,
@@ -28,6 +34,38 @@ export const ProveedoresPage = () => {
     const handlePageSizeChange = (newSize: number) => {
         setPageSize(newSize);
         setPage(1);
+    };
+
+    const handleExportCsv = async () => {
+        try {
+            const blob = await proveedoresApi.exportCsv();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `proveedores_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error exportando CSV:', error);
+        }
+    };
+
+    const handleExportExcel = async () => {
+        try {
+            const blob = await proveedoresApi.exportExcel();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `proveedores_${new Date().toISOString().split('T')[0]}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error exportando Excel:', error);
+        }
     };
 
     if (isLoading) return (
@@ -55,9 +93,19 @@ export const ProveedoresPage = () => {
                 </Button>
             </div>
 
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <KpiCard
+                    title="Total Proveedores"
+                    value={stats?.total_proveedores || 0}
+                    icon={<BuildingStorefrontIcon className="h-6 w-6" />}
+                    color="primary"
+                />
+            </div>
+
             {/* Filters */}
-            <Card className="p-4 flex items-center gap-4 border-slate-200 shadow-sm">
-                <div className="relative flex-1 max-w-md">
+            <Card className="p-4 flex flex-col sm:flex-row items-center gap-4 border-slate-200 shadow-sm">
+                <div className="relative flex-1 w-full sm:max-w-md">
                     <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                         type="text"
@@ -69,6 +117,26 @@ export const ProveedoresPage = () => {
                         }}
                         className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 outline-none transition-all text-sm"
                     />
+                </div>
+                <div className="flex items-center gap-2 ml-auto">
+                    <Button
+                        variant="outline"
+                        onClick={handleExportCsv}
+                        className="flex items-center gap-2 text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600"
+                        title="Exportar a CSV"
+                    >
+                        <DocumentTextIcon className="h-4 w-4" />
+                        <span className="hidden sm:inline">CSV</span>
+                    </Button>
+                    <Button
+                        variant="outline"
+                        onClick={handleExportExcel}
+                        className="flex items-center gap-2 text-slate-600 border-slate-200 hover:border-emerald-500 hover:text-emerald-600"
+                        title="Exportar a Excel"
+                    >
+                        <TableCellsIcon className="h-4 w-4" />
+                        <span className="hidden sm:inline">Excel</span>
+                    </Button>
                 </div>
             </Card>
 

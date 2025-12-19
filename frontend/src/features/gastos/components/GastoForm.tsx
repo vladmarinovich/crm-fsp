@@ -59,7 +59,7 @@ export const GastoForm = ({ initialData, isEditing = false }: GastoFormProps) =>
         },
     });
 
-    // Watch values for Combobox control
+    // Combobox selection
     const selectedProveedorId = watch('id_proveedor');
     const selectedCasoId = watch('id_caso');
 
@@ -125,6 +125,7 @@ export const GastoForm = ({ initialData, isEditing = false }: GastoFormProps) =>
                     type="date"
                     {...register('fecha_pago')}
                     error={errors.fecha_pago?.message}
+                    max={new Date().toISOString().split('T')[0]}
                 />
 
                 <Select

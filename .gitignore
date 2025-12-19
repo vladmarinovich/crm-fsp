@@ -33,7 +33,8 @@ htmlcov/
 # --- DATA & SCRIPTS ---
 data/
 *.csv
-*.json
+# *.json  <-- Disabled blanket ignore to allow config files
+data/*.json
 *.sql
 *.dump
 

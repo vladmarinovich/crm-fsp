@@ -16,9 +16,9 @@ import { supabase } from '@/core/lib/supabase';
 
 const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'Donantes', href: '/donantes', icon: UsersIcon },
     { name: 'Casos', href: '/casos', icon: HeartIcon },
     { name: 'Donaciones', href: '/donaciones', icon: CurrencyDollarIcon },
+    { name: 'Donantes', href: '/donantes', icon: UsersIcon },
     { name: 'Gastos', href: '/gastos', icon: BriefcaseIcon },
     { name: 'Proveedores', href: '/proveedores', icon: BuildingStorefrontIcon },
 ];
@@ -45,8 +45,8 @@ export const Sidebar = () => {
             )}>
                 {/* Logo Area */}
                 <div className="flex items-center h-20 px-6">
-                    <div className="flex items-center gap-2 text-cyan-600">
-                        <div className="p-2 bg-cyan-50 rounded-xl">
+                    <div className="flex items-center gap-2 text-primary-600">
+                        <div className="p-2 bg-primary-50 rounded-xl">
                             <HeartIcon className="h-6 w-6" />
                         </div>
                         <span className="text-xl font-bold tracking-tight text-slate-900">Salvando Patitas</span>
@@ -68,7 +68,7 @@ export const Sidebar = () => {
                             className={({ isActive }) =>
                                 clsx(
                                     isActive
-                                        ? 'bg-cyan-50 text-cyan-700 shadow-sm'
+                                        ? 'bg-primary-50 text-primary-700 shadow-sm'
                                         : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900',
                                     'group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200'
                                 )
@@ -79,7 +79,7 @@ export const Sidebar = () => {
                                     <item.icon
                                         className={clsx(
                                             'mr-3 flex-shrink-0 h-5 w-5',
-                                            isActive ? 'text-cyan-600' : 'text-slate-400 group-hover:text-slate-500'
+                                            isActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-500'
                                         )}
                                         aria-hidden="true"
                                     />
@@ -105,7 +105,7 @@ export const Sidebar = () => {
 
                     {/* User Profile */}
                     <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-xl group border border-transparent hover:border-slate-200 transition-colors">
-                        <div className="h-9 w-9 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm border-2 border-white shadow-sm">
+                        <div className="h-9 w-9 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm border-2 border-white shadow-sm">
                             {user?.email?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">

@@ -27,7 +27,7 @@ export const DonacionForm = ({ initialData, isEditing = false }: DonacionFormPro
     const [donanteSearch, setDonanteSearch] = useState('');
     const [casoSearch, setCasoSearch] = useState('');
 
-    // Debounce search (simple implementation)
+    // Debounce
     const [debouncedDonanteSearch, setDebouncedDonanteSearch] = useState('');
     const [debouncedCasoSearch, setDebouncedCasoSearch] = useState('');
 
@@ -60,7 +60,7 @@ export const DonacionForm = ({ initialData, isEditing = false }: DonacionFormPro
         },
     });
 
-    // Watch values for Combobox control
+    // Combobox selection
     const selectedDonanteId = watch('id_donante');
     const selectedCasoId = watch('id_caso');
 
@@ -124,6 +124,7 @@ export const DonacionForm = ({ initialData, isEditing = false }: DonacionFormPro
                     type="date"
                     {...register('fecha_donacion')}
                     error={errors.fecha_donacion?.message}
+                    max={new Date().toISOString().split('T')[0]}
                 />
 
                 <Select

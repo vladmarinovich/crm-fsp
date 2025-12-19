@@ -3,7 +3,7 @@ from .models import Donante, Donacion
 
 @admin.register(Donante)
 class DonanteAdmin(admin.ModelAdmin):
-    list_display = ('donante', 'tipo_id', 'identificacion', 'correo', 'fecha_creacion')
+    list_display = ('donante', 'tipo_id', 'identificacion', 'correo', 'created_at')
     search_fields = ('donante', 'identificacion', 'correo')
     list_filter = ('tipo_id', 'tipo_donante')
 

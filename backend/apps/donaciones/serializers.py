@@ -1,27 +1,40 @@
 from rest_framework import serializers
-from django.db.models import Sum
+from django.db.models import Sum, Count, Avg, Max
 from .models import Donante, Donacion
 from backend.apps.casos.models import Caso
 
 class DonanteSerializer(serializers.ModelSerializer):
     total_donado = serializers.SerializerMethodField()
+    cantidad_donaciones = serializers.SerializerMethodField()
+    promedio_donacion = serializers.SerializerMethodField()
+    ultima_donacion = serializers.SerializerMethodField()
 
     class Meta:
         model = Donante
         fields = '__all__'
 
-    def get_total_donado(self, obj):
-        # Calcula el total histórico donado por este donante
-        # Incluimos estados legacy que se ven en la captura (completado, confirmado)
+    def _get_donaciones_validas(self, obj):
         estados_validos = [
             'APROBADA', 'Aprobada', 'aprobada', 
             'COMPLETADO', 'Completado', 'completado', 'Completada',
             'CONFIRMADO', 'Confirmado', 'confirmado',
             'EXITOSA', 'Exitosa', 'exitosa'
         ]
-        total = obj.donaciones.filter(estado__in=estados_validos).aggregate(Sum('monto'))['monto__sum']
-        print(f"💰 [Debug] Donante {obj.id_donante}: Total calculado={total} (Estados: {estados_validos})")
+        return obj.donaciones.filter(estado__in=estados_validos)
+
+    def get_total_donado(self, obj):
+        total = self._get_donaciones_validas(obj).aggregate(Sum('monto'))['monto__sum']
         return total or 0
+
+    def get_cantidad_donaciones(self, obj):
+        return self._get_donaciones_validas(obj).count()
+
+    def get_promedio_donacion(self, obj):
+        promedio = self._get_donaciones_validas(obj).aggregate(Avg('monto'))['monto__avg']
+        return round(promedio, 2) if promedio else 0
+
+    def get_ultima_donacion(self, obj):
+        return self._get_donaciones_validas(obj).aggregate(Max('fecha_donacion'))['fecha_donacion__max']
 
 class DonacionSerializer(serializers.ModelSerializer):
     # Campos obligatorios para la API (aunque sean opcionales en BD)
@@ -39,4 +52,10 @@ class DonacionSerializer(serializers.ModelSerializer):
     def validate_monto(self, value):
         if value <= 0:
             raise serializers.ValidationError("El monto de la donación debe ser mayor a 0.")
+        return value
+
+    def validate_fecha_donacion(self, value):
+        from django.utils import timezone
+        if value > timezone.now().date():
+            raise serializers.ValidationError("La fecha de donación no puede ser futura.")
         return value

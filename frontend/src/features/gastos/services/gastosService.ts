@@ -27,6 +27,14 @@ export const gastosApi = {
     delete: async (id: number) => {
         await http.delete(`${ENDPOINTS.GASTOS.LIST}${id}/`);
     },
+
+    exportCsv: async (filters?: { fecha_desde?: string; fecha_hasta?: string }) => {
+        const response = await http.get('/gastos/exportar_csv/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
 };
 
 export const proveedoresApi = {

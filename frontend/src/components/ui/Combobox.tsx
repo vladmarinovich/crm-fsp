@@ -81,7 +81,7 @@ export const Combobox = ({
                         "w-full pl-4 pr-10 py-2 border rounded-xl shadow-sm outline-none transition-all bg-white",
                         error
                             ? "border-red-300 focus:ring-2 focus:ring-red-100 focus:border-red-500"
-                            : "border-slate-200 focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 hover:border-slate-300"
+                            : "border-slate-200 focus:ring-2 focus:ring-primary-100 focus:border-primary-500 hover:border-slate-300"
                     )}
                     placeholder={placeholder}
                     value={isOpen ? query : selectedLabel}
@@ -118,14 +118,14 @@ export const Combobox = ({
                             <li
                                 key={option.value}
                                 className={clsx(
-                                    "relative cursor-default select-none py-2.5 pl-3 pr-9 hover:bg-cyan-50 hover:text-cyan-900 cursor-pointer transition-colors",
-                                    option.value === value ? "font-semibold text-cyan-900 bg-cyan-50" : "text-slate-700"
+                                    "relative cursor-default select-none py-2.5 pl-3 pr-9 hover:bg-primary-50 hover:text-primary-900 cursor-pointer transition-colors",
+                                    option.value === value ? "font-semibold text-primary-900 bg-primary-50" : "text-slate-700"
                                 )}
                                 onClick={() => handleSelect(option)}
                             >
                                 <span className="block truncate">{option.label}</span>
                                 {option.value === value && (
-                                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-cyan-600">
+                                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-primary-600">
                                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
                                     </span>
                                 )}

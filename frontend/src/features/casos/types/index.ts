@@ -11,15 +11,22 @@ export interface Caso {
     diagnostico?: string;
     id_hogar_de_paso?: number;
     hogar_nombre?: string;
-    // Calculated fields from serializer
-    total_donado?: number;
+    // Computed fields from backend
+    nombre_hogar_de_paso?: string;
+    total_recaudado?: number;
     total_gastado?: number;
+    dias_activo?: number | null;
+    // Legacy fields (keep for compatibility)
+    total_donado?: number;
     balance?: number;
 }
 
 export interface CasoFilters {
     search?: string;
     estado?: string;
+    veterinaria?: string;
+    start_date?: string;
+    end_date?: string;
     page?: number;
     page_size?: number;
 }

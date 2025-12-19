@@ -27,4 +27,20 @@ export const donacionesApi = {
     delete: async (id: number) => {
         await http.delete(ENDPOINTS.DONACIONES.DELETE(id));
     },
+
+    exportCsv: async (filters?: { fecha_desde?: string; fecha_hasta?: string; start_date?: string; end_date?: string }) => {
+        const response = await http.get('/donaciones/exportar_csv/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
+
+    exportExcel: async (filters?: { fecha_desde?: string; fecha_hasta?: string; start_date?: string; end_date?: string }) => {
+        const response = await http.get('/donaciones/exportar_excel/', {
+            params: filters,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
 };

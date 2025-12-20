@@ -24,8 +24,8 @@ class DashboardView(APIView):
         
         # Filtros base
         donacion_filters = Q(estado__in=valid_statuses)
-        gasto_filters = Q(estado__iexact='PAGADO')
-        rel_gasto_filters = Q(gastos__estado__iexact='PAGADO')
+        gasto_filters = Q() & ~Q(estado__in=['ANULADO', 'Anulado', 'anulado'])
+        rel_gasto_filters = Q() & ~Q(gastos__estado__in=['ANULADO', 'Anulado', 'anulado'])
 
         # 2. Manejo de Fechas y Periodo Anterior
         start_date = parse_date(start_date_str) if start_date_str else None

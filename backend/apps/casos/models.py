@@ -46,6 +46,7 @@ class Caso(TimeStampedModel):
     fecha_salida = models.DateField(null=True, blank=True)
     veterinaria = models.CharField(max_length=255, null=True, blank=True)
     diagnostico = models.TextField(null=True, blank=True)
+    presupuesto = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, help_text="Presupuesto estimado")
     archivo = models.JSONField(null=True, blank=True, help_text="Historia clínica o archivos adjuntos")
     
     # FK interna

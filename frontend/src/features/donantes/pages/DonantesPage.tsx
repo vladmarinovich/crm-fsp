@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import { KpiCard } from '@/components/ui/KpiCard';
+import { ComingSoonChart } from '@/components/ui/ComingSoonChart';
 
 export const DonantesPage = () => {
     const navigate = useNavigate();
@@ -152,6 +153,16 @@ export const DonantesPage = () => {
                     color="primary"
                     icon={<StarIcon className="h-6 w-6" />}
                 />
+            </div>
+
+            {/* Analysis Section (Placeholder) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card className="p-4">
+                    <ComingSoonChart title="Tendencia de Donaciones" />
+                </Card>
+                <Card className="p-4">
+                    <ComingSoonChart title="Distribución por Tipo de Donante" />
+                </Card>
             </div>
 
             {/* Filters & Search */}

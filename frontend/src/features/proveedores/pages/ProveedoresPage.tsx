@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { KpiCard } from '@/components/ui/KpiCard';
 import { useProveedoresStats } from '../hooks/useProveedoresStats';
+import { ComingSoonChart } from '@/components/ui/ComingSoonChart';
 
 export const ProveedoresPage = () => {
     const navigate = useNavigate();
@@ -101,6 +102,16 @@ export const ProveedoresPage = () => {
                     icon={<BuildingStorefrontIcon className="h-6 w-6" />}
                     color="primary"
                 />
+            </div>
+
+            {/* Analysis Section (Placeholder) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card className="p-4">
+                    <ComingSoonChart title="Gastos por Proveedor" />
+                </Card>
+                <Card className="p-4">
+                    <ComingSoonChart title="Evolución de Contrataciones" />
+                </Card>
             </div>
 
             {/* Filters */}

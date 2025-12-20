@@ -72,7 +72,7 @@ class DashboardView(APIView):
         
         if prev_start_date and prev_end_date:
             prev_donacion_filters = Q(estado__in=valid_statuses) & Q(fecha_donacion__gte=prev_start_date) & Q(fecha_donacion__lte=prev_end_date)
-            prev_gasto_filters = (Q() & ~Q(estado__in=['ANULADO', 'Anulado', 'anulado'])) & Q(fecha_pago__gte=prev_start_date) & Q(fecha_pago__lte=prev_end_date)
+            prev_gasto_filters = Q(estado__iexact='PAGADO') & Q(fecha_pago__gte=prev_start_date) & Q(fecha_pago__lte=prev_end_date)
             
             prev_total_donado = Donacion.objects.filter(prev_donacion_filters).aggregate(Sum('monto'))['monto__sum'] or 0
             prev_total_gastado = Gasto.objects.filter(prev_gasto_filters).aggregate(Sum('monto'))['monto__sum'] or 0
